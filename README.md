@@ -15,10 +15,58 @@ The system includes:
 * Recall@k evaluation pipeline
 * Frontend chat interface with UX optimizations
 
+## Live Demo
+
+Frontend: https://enterprise-ai-copilot.vercel.app/
+Backend API: https://enterprise-ai-copilot-backend-production.up.railway.app/health
+
 
 ---
 
-# Architecture
+## Example Query
+
+User question:
+
+> "What is the double burden of malnutrition?"
+
+System retrieval:
+
+Source: Malnutrition_Argentina_Unicef.pdf  
+Section: 6  
+Chunk: 14  
+Score: 0.21  
+
+LLM Answer:
+
+> "Según el documento Malnutricion_Arg_Unicef.pdf, sección 6..."
+
+---
+
+# System Architecture
+
+User
+ ↓
+Frontend (React)
+ ↓
+FastAPI Backend
+ ↓
+Embedding Generation
+ ↓
+Vector Database Search
+ ↓
+Top-k Retrieval
+ ↓
+Optional Neighbor Expansion
+ ↓
+Context Assembly
+ ↓
+LLM Generation
+ ↓
+Response + Metadata
+
+---
+
+## Architecture
 
 ### Backend
 
@@ -78,6 +126,7 @@ Before calling the LLM:
 * Context + question token estimation
 * Hard limit (`MAX_INPUT_TOKENS_ALLOWED`)
 * Graceful fallback if exceeded
+
 
 ---
 
@@ -225,6 +274,29 @@ frontend
     ├── package.json
     └── vite.config.ts
 ```
+---
+# Interface Preview
+
+## Chat Interface
+
+![Chat Interface](docs/chat1.png)
+
+![Chat Interface](docs/chat2.png)
+
+## Retrieval Details
+
+![Retrieval Details](docs/detail1.png)
+
+
+## Document Management
+
+![Documents](docs/management1.png)
+
+![Documents](docs/management2.png)
+
+![Documents](docs/management3.png)
+
+![Documents](docs/management4.png)
 ---
 
 # Why this project matters?

@@ -152,9 +152,9 @@ def retrieve_relevant_chunks(
         })
 
     return {
-        "documents": [[doc for doc, _, _ in final_docs]],
-        "metadatas": [[meta for _, meta, _ in final_docs]],
-        "ids": [[chunk_id for _, _, chunk_id in final_docs]],
+        "documents": [[doc for doc, _, _, _ in final_docs]],
+        "metadatas": [[meta for _, meta, _, _ in final_docs]],
+        "ids": [[chunk_id for _, _, chunk_id, _ in final_docs]],
         "sources": sources,
         "document_ids": effective_doc_ids
     }
