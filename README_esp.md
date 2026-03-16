@@ -177,17 +177,59 @@ Esto demuestra comprensión de:
 # Estructura del proyecto
 
 ```
-app/
- ├── core/
- ├── services/
- │    ├── retrieval_service.py
- │    ├── llm_service.py
- ├── routes/
- │    ├── routes_ask.py
- ├── evaluation/
- │    ├── recall_eval.py
-frontend/
- ├── Chat.tsx
+backend
+│
+├── app
+│   │
+│   ├── main.py
+│   │
+│   ├── core
+│   │   ├── config.py
+│   │   └── logging.py
+│   │
+│   ├── db
+│   │   └── vector_store.py
+│   │
+│   ├── services
+│   │   ├── embedding_service.py
+│   │   ├── ingestion_service.py
+│   │   ├── retrieval_service.py
+│   │   └── llm_service.py
+│   │
+│   ├── routes
+│   │   ├── routes_ask.py
+│   │   ├── routes_upload.py
+│   │   └── routes_delete.py
+│   │
+│   └── evaluation
+│       └── recall_eval.py
+│
+├── chroma_db/
+├── uploads/
+├── requirements.txt
+└── Dockerfile
+```
+
+```
+frontend
+│
+└── client
+    │
+    ├── src
+    │   ├── components
+    │   │   ├── Chat.tsx
+    │   │   ├── DocumentSelector.tsx
+    │   │   ├── TypingMessage.tsx
+    │   │   └── Message.tsx
+    │   │
+    │   ├── services
+    │   │   └── api.ts
+    │   │
+    │   ├── App.tsx
+    │   └── main.tsx
+    │
+    ├── package.json
+    └── vite.config.ts
 ```
 
 ---

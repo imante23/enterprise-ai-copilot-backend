@@ -64,6 +64,7 @@ def retrieve_relevant_chunks(
             "documents": [[]],
             "metadatas": [[]],
             "ids": [[]],
+            "sources": [],
             "document_ids": []
         }
 
@@ -73,12 +74,25 @@ def retrieve_relevant_chunks(
 
     effective_doc_id = effective_doc_ids[0]
 
-   
+   # SIN expansión de vecinos
     if not expand_neighbors:
+
+        sources = []
+
+        for doc, meta, distance, chunk_id in base_chunks:
+            sources.append({
+                "file": meta.get("source_file"),
+                "section": meta.get("chunk_index"),
+                "chunk_id": chunk_id,
+                "score": distance
+            })
+
+
         return {
             "documents": [[doc for doc, _, _, _ in base_chunks]],
             "metadatas": [[meta for _, meta, _, _ in base_chunks]],
             "ids": [[chunk_id for _, _, _, chunk_id in base_chunks]],
+            "sources": sources,
             "document_ids": effective_doc_ids
         }
 
@@ -111,17 +125,37 @@ def retrieve_relevant_chunks(
         neighbor_results["ids"]
     ):
         key = (meta["document_id"], meta["chunk_index"])
+        
         if key not in seen:
             seen.add(key)
-            final_docs.append((doc, meta, chunk_id))
+
+            # score aproximado (no viene del get)
+            score = next(
+                (d for _, m, d, cid in ranked if cid == chunk_id),
+                None
+            )
+
+            final_docs.append((doc, meta, chunk_id, score))
 
     final_docs = sorted(final_docs, key=lambda x: x[1]["chunk_index"])
     final_docs = final_docs[: top_k * 2]
+
+
+    sources = []
+
+    for doc, meta, chunk_id, score in final_docs:
+        sources.append({
+            "file": meta.get("source_file"),
+            "section": meta.get("chunk_index"),
+            "chunk_id": chunk_id,
+            "score": score
+        })
 
     return {
         "documents": [[doc for doc, _, _ in final_docs]],
         "metadatas": [[meta for _, meta, _ in final_docs]],
         "ids": [[chunk_id for _, _, chunk_id in final_docs]],
+        "sources": sources,
         "document_ids": effective_doc_ids
     }
 

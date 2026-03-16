@@ -30,7 +30,6 @@ def ask(request: QuestionRequest):
     
 
     context = ""
-    used_sources = []
 
     for i, doc in enumerate(documents):
 
@@ -51,11 +50,6 @@ def ask(request: QuestionRequest):
 
         context = tentative_context
 
-        source_entry = {
-            "file": source,
-            "section": section
-        }
-
         
 
     prompt = f"""
@@ -72,7 +66,7 @@ def ask(request: QuestionRequest):
 
     return {
         "answer": llm_response["answer"],
-        "sources": retrieval["ids"][0],
+        "sources": retrieval["sources"],
         "confidence": "medium",
         "latency_ms": latency,
         "tokens": llm_response["usage"]
